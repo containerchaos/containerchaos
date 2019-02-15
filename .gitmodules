@@ -1,0 +1,3 @@
+[submodule "docker-nginx-flask-redis-postgres"]
+	path = docker-nginx-flask-redis-postgres
+	url = https://github.com/containerchaos/docker-nginx-flask-redis-postgres.git
