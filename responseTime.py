@@ -13,7 +13,6 @@ responseTime = response.elapsed.total_seconds()
 dateTime = datetime.datetime.now()
 
 fieldnames=['timestamp', 'responseTime'] #Headers of the CSV file
-row = [dateTime, responseTime]
 
 with open('responseTimes.csv', 'a') as csvFile:
 
