@@ -20,4 +20,6 @@ def get_containers(image: str) -> typing.List[docker.models.containers.Container
     return containers
 
 def get_stats(container: docker.models.containers.Container) -> dict:
-    return container.stats(stream=False)
+    stats = container.stats(stream=False)
+    stats.update({'attrs': container.attrs})
+    return stats
