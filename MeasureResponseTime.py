@@ -4,6 +4,7 @@ import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
+import seaborn as sns
 
 
 def measure_response_time(url, criteria):
@@ -31,7 +32,7 @@ def measure_response_time(url, criteria):
     return out_path
 
 
-def generate_graph(path):
+def generate_histogram(path):
     '''
     Saves a histogram with average response time per number of requests
 
@@ -48,13 +49,37 @@ def generate_graph(path):
     plt.legend(loc="upper right")
     plt.xlabel("Response Time in Seconds")
     plt.ylabel("Number of Requests")
-    plt.savefig("responseTimes-figure")
+    plt.savefig("responseTimes-histogram")
     plt.show()
 
+
+def generate_density_plot(path):
+    '''
+    Saves a density plot with density of requests per second
+
+    :param path: Path to a csv file
+    '''
+    response_times = pd.read_csv(path)
+
+    criteria_dict = response_times.groupby("criteria")["responseTime"].apply(list).to_dict()
+    critera_keys = list(criteria_dict.keys())
+    # criteria_values = list(criteria_dict.values())
+
+    for criteria in critera_keys:
+        subset = response_times[response_times["criteria"] == criteria]
+
+        sns.distplot(subset["responseTime"], hist=False, kde=True, kde_kws={"linewidth": 3}, label=criteria)
+
+    plt.legend(loc="upper right")
+    plt.xlabel("Response Time in Seconds")
+    plt.ylabel("Density")
+    plt.savefig("responseTimes-densityPlot")
+    plt.show()
 
 for i in range(100):
     path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria A")
     path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria B")
     path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria C")
 
-generate_graph("Response-Times.csv")
+generate_histogram("Response-Times.csv")
+generate_density_plot("Response-Times.csv")
