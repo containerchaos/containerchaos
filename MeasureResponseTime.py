@@ -81,5 +81,5 @@ for i in range(100):
     path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria B")
     path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria C")
 
-generate_histogram("Response-Times.csv")
-generate_density_plot("Response-Times.csv")
+generate_histogram(path_to_csv)
+generate_density_plot(path_to_csv)
