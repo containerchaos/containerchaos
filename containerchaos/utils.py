@@ -38,3 +38,5 @@ def get_stats(container: docker.models.containers.Container) -> dict:
     # print(filtered)
     return filtered
 
+def stop_container(container):
+	container.stop(timeout=3)
