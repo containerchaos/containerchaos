@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 docker = "*"
 pytest = "*"
+pandas = "*"
+seaborn = "*"
 
 [dev-packages]
 

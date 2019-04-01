@@ -76,11 +76,11 @@ def generate_density_plot(path):
     plt.savefig("responseTimes-densityPlot")
     plt.show()
 
+if __name__ == '__main__':
+    for i in range(100):
+        path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria A")
+        path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria B")
+        path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria C")
 
-for i in range(100):
-    path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria A")
-    path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria B")
-    path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria C")
-
-generate_histogram(path_to_csv)
-generate_density_plot(path_to_csv)
+    generate_histogram(path_to_csv)
+    generate_density_plot(path_to_csv)
