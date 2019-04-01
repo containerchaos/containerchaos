@@ -19,7 +19,22 @@ def get_containers(image: str) -> typing.List[docker.models.containers.Container
     ]
     return containers
 
+def _filter_stats(stats: dict) -> dict:
+    cpu_stats_total_usage = stats['cpu_stats']['cpu_usage']['total_usage']
+    memory_stats_usage = stats['memory_stats']['usage']
+    created = stats['attrs']['Created']
+    return {
+        'cpu_stats_total_usage': cpu_stats_total_usage,
+        'memory_stats_usage': memory_stats_usage,
+        'created': created,
+        'status': stats['attrs']['State']['Status']
+    }
+
 def get_stats(container: docker.models.containers.Container) -> dict:
     stats = container.stats(stream=False)
     stats.update({'attrs': container.attrs})
-    return stats
+    # print(stats)
+    filtered = {container: _filter_stats(stats)}
+    # print(filtered)
+    return filtered
+
