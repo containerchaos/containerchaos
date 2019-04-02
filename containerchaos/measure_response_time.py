@@ -7,7 +7,7 @@ import requests
 import seaborn as sns
 
 
-def measure_response_time(url, criteria):
+def measure_response_time(url, criteria, write=True):
     '''
     Measures and saves an API request's response time to a CSV file
 
@@ -22,13 +22,14 @@ def measure_response_time(url, criteria):
     fieldnames = ['timestamp', 'responseTime', 'criteria']  # Headers of the CSV file
     out_path = 'Response-Times.csv'
 
-    with open(out_path, 'a') as csvFile:
-        writer = csv.DictWriter(csvFile, fieldnames=fieldnames)
-        if csvFile.tell() == 0:
-            writer.writeheader()
-        writer.writerow({'timestamp': date_time, 'responseTime': response_time, 'criteria': criteria})
+    if write:
+        with open(out_path, 'a') as csvFile:
+            writer = csv.DictWriter(csvFile, fieldnames=fieldnames)
+            if csvFile.tell() == 0:
+                writer.writeheader()
+            writer.writerow({'timestamp': date_time, 'responseTime': response_time, 'criteria': criteria})
 
-    csvFile.close()
+        csvFile.close()
     return out_path
 
 
