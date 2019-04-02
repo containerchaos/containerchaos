@@ -17,6 +17,12 @@ docker swarm init
 docker stack deploy --compose-file docker-compose.yml webapp
 ```
 
+
+To cleanup:
+```
+docker stack rm webapp
+```
+
 ## Tests
 
 Install pipenv
