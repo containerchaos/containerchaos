@@ -34,9 +34,19 @@ def get_stats(container: docker.models.containers.Container) -> dict:
     stats = container.stats(stream=False)
     stats.update({'attrs': container.attrs})
     # print(stats)
-    filtered = {container: _filter_stats(stats)}
+    filtered = _filter_stats(stats)
     # print(filtered)
     return filtered
+
+def find_most_cpu(containers: list):
+    largest_container = None
+    largest_value = 0
+    for container in containers:
+        stats = get_stats(container)
+        if stats['cpu_stats_total_usage'] > largest_value:
+            largest_value = stats['cpu_stats_total_usage']
+            largest_container = container
+    return largest_container
 
 def stop_container(container):
 	container.stop(timeout=3)

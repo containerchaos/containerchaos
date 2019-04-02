@@ -1,6 +1,7 @@
 import subprocess
 import time
-import containerchaos.measure_response_time
+import measure_response_time
+import utils
 
 URL = "http://localhost/"
 
@@ -34,9 +35,21 @@ def main():
     _deploy()
 
     for i in range(100):
-        containerchaos.measure_response_time.()
+        measure_response_time.measure_response_time(URL, "Baseline")
+    _cleanup()
 
-
+    _deploy()
+    print("Redo baseline, but dont save to csv") # To establish some API use
+    for i in range(100):
+        measure_response_time.measure_response_time(URL, "Baseline", write=False)
+    print("By CPU Usage")
+    containers = utils.get_containers("flaskapp")
+    c = utils.find_most_cpu(containers)
+    print("Stopping container {}".format(c))
+    utils.stop_container(c)
+    for i in range(100):
+        measure_response_time.measure_response_time(URL, "CPU Usage")
+    _cleanup()
 
 if __name__ == '__main__':
     main()
