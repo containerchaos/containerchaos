@@ -10,4 +10,5 @@ def test_container_utils():
     # print(stat)
 
     for c in containers:
+        print(c)
         print(containerchaos.utils.get_stats(c))
