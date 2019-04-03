@@ -33,7 +33,7 @@ def measure_response_time(url, criteria, write=True):
     return out_path
 
 
-def generate_histogram(path):
+def generate_histogram(path, title):
     '''
     Saves a histogram with average response time per number of requests
 
@@ -45,16 +45,17 @@ def generate_histogram(path):
     critera_keys = list(criteria_dict.keys())
     criteria_values = list(criteria_dict.values())
 
+    plt.title(title)
     plt.style.use("seaborn-deep")
     plt.hist(x=criteria_values, bins=30, label=critera_keys)
     plt.legend(loc="upper right")
     plt.xlabel("Response Time in Seconds")
     plt.ylabel("Number of Requests")
-    plt.savefig("responseTimes-histogram")
+    plt.savefig(title + " Histogram")
     plt.show()
 
 
-def generate_density_plot(path):
+def generate_density_plot(path, title):
     '''
     Saves a density plot with density of requests per second
 
@@ -71,17 +72,22 @@ def generate_density_plot(path):
 
         sns.distplot(subset["responseTime"], hist=False, kde=True, kde_kws={"linewidth": 3}, label=criteria)
 
+    plt.title(title)
     plt.legend(loc="upper right")
     plt.xlabel("Response Time in Seconds")
     plt.ylabel("Density")
-    plt.savefig("responseTimes-densityPlot")
+    plt.savefig(title + " Density Plot")
     plt.show()
 
-if __name__ == '__main__':
-    for i in range(100):
-        path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria A")
-        path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria B")
-        path_to_csv = measure_response_time('https://jsonmock.hackerrank.com/api/countries/', "Criteria C")
 
-    generate_histogram(path_to_csv)
-    generate_density_plot(path_to_csv)
+local_simple_csv = "output/local/simple/Response-Times.csv"
+local_complex_csv = "output/local/complex/Response-Times.csv"
+
+cloud_simple_csv = "output/gcloud/simple/Response-Times.csv"
+cloud_complex_csv = "output/gcloud/complex/Response-Times.csv"
+
+generate_histogram(local_simple_csv, "Local Machine Simple Task")
+generate_density_plot(local_complex_csv, "Local Machine Complex Task")
+
+generate_density_plot(cloud_simple_csv, "Cloud Simple Task")
+generate_histogram(cloud_complex_csv, "Cloud Complex Task")
